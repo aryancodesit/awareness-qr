@@ -16,6 +16,6 @@ def generate_awareness_qr(target_url):
     img.save("awareness_qr.png")
     print(f"QR Code successfully generated for: {target_url}")
 
-TARGET_URL = "https://aryancodesit.github.io/awareness-qr/"
+TARGET_URL = "https://github.com/aryancodesit/awareness-qr.git"
 
 generate_awareness_qr(TARGET_URL)
