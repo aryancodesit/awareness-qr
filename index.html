@@ -128,6 +128,8 @@
             text-decoration: none;
             margin: 10px 5px;
             transition: all 0.3s;
+            background: transparent;
+            cursor: pointer;
         }
 
         .btn:hover {
@@ -151,8 +153,17 @@
 
 <body>
 
+    <!-- START OVERLAY -->
+    <div id="start-overlay"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:black; z-index:2000; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+        <h1 style="color:red; font-size:3em;">⚠ WARNING ⚠</h1>
+        <p style="margin-bottom:30px;">Suspicious activity detected.</p>
+        <button id="start-btn" class="btn" style="font-size:1.5rem; border:2px solid red; color:red;">VERIFY SYSTEM
+            SAFETY</button>
+    </div>
+
     <!-- STAGE 1: THE PRANK -->
-    <div id="prank-container">
+    <div id="prank-container" style="display:none;">
         <h1 class="glitch">SYSTEM COMPROMISED</h1>
         <div class="terminal-log" id="log-output">
             > Initializing remote connection...<br>
@@ -216,7 +227,9 @@
     </div>
 
     <script>
-        // PRANK SEQUENCE
+        // ELEMENTS
+        const startBtn = document.getElementById('start-btn');
+        const startOverlay = document.getElementById('start-overlay');
         const progressBar = document.getElementById('progress');
         const statusText = document.getElementById('status-text');
         const prankContainer = document.getElementById('prank-container');
@@ -224,37 +237,112 @@
         const educationContainer = document.getElementById('education-container');
         const body = document.body;
 
-        // Start animation immediately
-        setTimeout(() => {
-            progressBar.style.width = '100%';
+        // AUDIO CONTEXT
+        let audioCtx;
+        let oscillator;
+        let gainNode;
 
-            // Update percentage text
-            let p = 0;
-            const interval = setInterval(() => {
-                p += 1;
-                statusText.innerText = `UPLOADING... ${p}%`;
-                if (p >= 100) clearInterval(interval);
-            }, 30);
+        function initAudio() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            } catch (e) {
+                console.warn('Web Audio API not supported');
+            }
+        }
 
-        }, 500);
+        function playSiren() {
+            if (!audioCtx) return;
 
-        // Trigger Scare
-        setTimeout(() => {
-            prankContainer.style.display = 'none';
-            scareOverlay.style.display = 'block';
+            // Create oscillator
+            oscillator = audioCtx.createOscillator();
+            gainNode = audioCtx.createGain();
 
-            // "Scream" vibration if supported
-            if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // Start at 440Hz
 
-        }, 3500); // 3.5s (after progress bar fills roughly)
+            // Connect to gain (volume)
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
 
-        // Show Education
-        setTimeout(() => {
-            scareOverlay.style.display = 'none';
-            body.style.overflow = 'auto'; // Re-enable scroll
-            body.style.alignItems = 'flex-start'; // Align top for long content
-            educationContainer.style.display = 'block';
-        }, 5000); // 1.5s of scare
+            // Siren Effect (LFO via frequency ramp loop)
+            const now = audioCtx.currentTime;
+            oscillator.frequency.linearRampToValueAtTime(880, now + 0.5);   // High
+            oscillator.frequency.linearRampToValueAtTime(440, now + 1.0);  // Low
+            oscillator.frequency.linearRampToValueAtTime(880, now + 1.5);   // High
+            oscillator.frequency.linearRampToValueAtTime(440, now + 2.0);  // Low
+
+            // Loop the ramp manually for a few seconds using setTargetAtTime or simple interval?
+            // Simple interval for creating "WoooWooo" effect
+            let high = false;
+            let sirenInterval = setInterval(() => {
+                if (!oscillator) { clearInterval(sirenInterval); return; }
+                const t = audioCtx.currentTime;
+                if (high) {
+                    oscillator.frequency.linearRampToValueAtTime(440, t + 0.3);
+                } else {
+                    oscillator.frequency.linearRampToValueAtTime(900, t + 0.3);
+                }
+                high = !high;
+            }, 300);
+
+            oscillator.start();
+            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime); // 50% volume
+
+            // Stop after 2 seconds
+            setTimeout(() => {
+                if (oscillator) {
+                    oscillator.stop();
+                    oscillator.disconnect();
+                    oscillator = null;
+                }
+            }, 2000);
+        }
+
+        startBtn.addEventListener('click', () => {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            startOverlay.style.display = 'none';
+            prankContainer.style.display = 'block';
+
+            // Start PRANK SEQUENCE
+            setTimeout(() => {
+                progressBar.style.width = '100%';
+
+                // Update percentage text
+                let p = 0;
+                const interval = setInterval(() => {
+                    p += 1;
+                    statusText.innerText = `UPLOADING... ${p}%`;
+                    if (p >= 100) clearInterval(interval);
+                }, 30);
+
+            }, 500);
+
+            // Trigger Scare
+            setTimeout(() => {
+                prankContainer.style.display = 'none';
+                scareOverlay.style.display = 'block';
+
+                // Play Siren
+                playSiren();
+
+                // "Scream" vibration if supported
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);
+
+            }, 3500); // 3.5s
+
+            // Show Education
+            setTimeout(() => {
+                scareOverlay.style.display = 'none';
+                body.style.overflow = 'auto'; // Re-enable scroll
+                body.style.alignItems = 'flex-start'; // Align top for long content
+                educationContainer.style.display = 'block';
+            }, 6000); // 2.5s of scare + siren
+        });
 
     </script>
 </body>
