@@ -6,7 +6,7 @@
   <img src="./awareness_qr.png" alt="Scan to Try" width="300" />
   
   ### 📱 SCAN TO TEST YOUR VIGILANCE 📱
-  *(Dare to scan? Don't say we didn't warn you.)*
+  *(Dare to scan? Don't say I didn't warn you.)*
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   ![Status](https://img.shields.io/badge/System-COMPROMISED..._Just_Kidding-red)
