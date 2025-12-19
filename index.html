@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM CRITICAL FAILURE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            font-size: 2rem;
+            position: relative;
+            animation: glitch 1s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: -2px 0 red;
+                transform: skewX(-20deg);
+            }
+
+            20% {
+                text-shadow: 2px 0 blue;
+                transform: skewX(20deg);
+            }
+
+            40% {
+                text-shadow: -2px 0 red;
+                transform: skewX(-10deg);
+            }
+
+            100% {
+                text-shadow: 2px 0 blue;
+                transform: skewX(10deg);
+            }
+        }
+
+        /* Prank/Loading Container */
+        #prank-container {
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #333;
+            height: 30px;
+            margin-top: 20px;
+            position: relative;
+            border: 2px solid #0f0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #0f0;
+            width: 0%;
+            transition: width 3s linear;
+        }
+
+        /* Jumpscare/Alert */
+        #scare-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: red;
+            z-index: 1000;
+            animation: flash 0.1s infinite;
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Educational Content */
+        #education-container {
+            display: none;
+            width: 90%;
+            max-width: 800px;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            text-align: left;
+            border: 1px solid #0f0;
+            box-sizing: border-box;
+            background: rgba(0, 20, 0, 0.9);
+        }
+
+        h2 {
+            border-bottom: 2px solid #0f0;
+            padding-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #0f0;
+            color: #000;
+        }
+
+        .resource-link {
+            color: #0ff;
+            text-decoration: none;
+            border-bottom: 1px dotted #0ff;
+        }
+
+        .terminal-log {
+            color: #aaa;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- STAGE 1: THE PRANK -->
+    <div id="prank-container">
+        <h1 class="glitch">SYSTEM COMPROMISED</h1>
+        <div class="terminal-log" id="log-output">
+            > Initializing remote connection...<br>
+            > Bypassing firewall...<br>
+            > Accessing camera...<br>
+            > Uploading personal data...
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        <h3 id="status-text">UPLOADING... 0%</h3>
+    </div>
+
+    <!-- JUMPSCARE OVERLAY -->
+    <div id="scare-overlay">
+        <h1 style="color: black; font-size: 5rem; margin-top: 20vh;">YOU HAVE BEEN HACKED!</h1>
+    </div>
+
+    <!-- STAGE 2: EDUCATION -->
+    <div id="education-container">
+        <h1 style="text-align:center; color: #0ff;">JUST KIDDING! 😂</h1>
+        <p style="text-align:center;">But seriously... imagine if that was real.</p>
+
+        <div style="border: 2px solid #f00; padding: 15px; margin: 20px 0; background: #200;">
+            <strong style="color: #f00; font-size: 1.2em;">⚠ STOP. READ BETWEEN THE LINES.</strong><br><br>
+            You just scanned a random QR code without verifying where it goes.
+            In the cybersecurity world, this is a vector for <b>"Quishing"</b> (QR Phishing).
+        </div>
+
+        <h3>🛡️ How to Verify URL before Scanning</h3>
+        <ul>
+            <li><b>Be Skeptical:</b> Treat physical QR codes like strange USB drives. Don't trust them blindly.</li>
+            <li><b>Inspect the Code:</b> Look for stickers placed *over* legitimate signs.</li>
+            <li><b>Use a Scanner with Preview:</b> Ensure your camera app shows the full URL before opening.</li>
+            <li><b>Check the Domain:</b> `google.security-check.com` is NOT `google.com`. Watch for typos.</li>
+        </ul>
+
+        <h3>🎓 Learn More (Highly Recommended)</h3>
+        <p>Start your journey into cybersecurity awareness with these legends:</p>
+        <ul>
+            <li><a href="https://www.youtube.com/c/NetworkChuck" class="resource-link" target="_blank">NetworkChuck
+                    (YouTube)</a> - Makes hacking concepts fun and easy.</li>
+            <li><a href="https://www.youtube.com/c/JohnHammond010" class="resource-link" target="_blank">John Hammond
+                    (YouTube)</a> - Deep dives into malware and CTFs.</li>
+            <li><a href="https://www.youtube.com/user/Computerphile" class="resource-link"
+                    target="_blank">Computerphile</a> - The theory behind the tech.</li>
+        </ul>
+
+        <h3>🛠️ Verification Tools</h3>
+        <ul>
+            <li><a href="https://urlscan.io/" class="resource-link" target="_blank">urlscan.io</a> - Scan a URL to see
+                what it does without visiting it.</li>
+            <li><a href="https://www.virustotal.com/" class="resource-link" target="_blank">VirusTotal</a> - Check
+                links/files against antivirus engines.</li>
+        </ul>
+
+        <div style="margin-top: 30px; text-align: center; border-top: 1px solid #333; padding-top: 20px;">
+            <p>This project is open source. Contribute or star it on GitHub:</p>
+            <a href="https://github.com/aryancodesit/awareness-qr.git" class="btn">View on GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        // PRANK SEQUENCE
+        const progressBar = document.getElementById('progress');
+        const statusText = document.getElementById('status-text');
+        const prankContainer = document.getElementById('prank-container');
+        const scareOverlay = document.getElementById('scare-overlay');
+        const educationContainer = document.getElementById('education-container');
+        const body = document.body;
+
+        // Start animation immediately
+        setTimeout(() => {
+            progressBar.style.width = '100%';
+
+            // Update percentage text
+            let p = 0;
+            const interval = setInterval(() => {
+                p += 1;
+                statusText.innerText = `UPLOADING... ${p}%`;
+                if (p >= 100) clearInterval(interval);
+            }, 30);
+
+        }, 500);
+
+        // Trigger Scare
+        setTimeout(() => {
+            prankContainer.style.display = 'none';
+            scareOverlay.style.display = 'block';
+
+            // "Scream" vibration if supported
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);
+
+        }, 3500); // 3.5s (after progress bar fills roughly)
+
+        // Show Education
+        setTimeout(() => {
+            scareOverlay.style.display = 'none';
+            body.style.overflow = 'auto'; // Re-enable scroll
+            body.style.alignItems = 'flex-start'; // Align top for long content
+            educationContainer.style.display = 'block';
+        }, 5000); // 1.5s of scare
+
+    </script>
+</body>
+
+</html>
